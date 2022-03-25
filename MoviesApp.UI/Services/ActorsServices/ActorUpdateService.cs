@@ -18,14 +18,19 @@ namespace MoviesApp.UI.Services
         public async Task CreateActor(Actor actor)
         {
            await _movieApiClient.AddAsync(actor);
-          //  await _actorService.GetActors();
-             _navigationManager.NavigateTo("Actors");
+           _navigationManager.NavigateTo("Actors");
 
         }
 
         public async Task DeleteActor(int id)
         {
             await _movieApiClient.Actors2Async(id);
+            _navigationManager.NavigateTo("Actors");
+        }
+
+        public async Task UpdateActor(Actor actor)
+        {
+            await _movieApiClient.EditAsync(actor);
             _navigationManager.NavigateTo("Actors");
         }
 

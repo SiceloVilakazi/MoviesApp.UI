@@ -5,5 +5,7 @@
         Task CreateActor(Actor actor);
 
         Task DeleteActor(int id);
+
+        Task UpdateActor(Actor actor);
     }
 }

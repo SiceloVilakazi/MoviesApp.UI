@@ -5,5 +5,6 @@
         List<Actor> actors { get; set; }
         Task GetActors();
 
+        Task<Actor> GetSingleActor(int id);
     }
 }

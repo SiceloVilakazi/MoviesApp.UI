@@ -1,10 +1,19 @@
 ﻿@page "/UpdateActor"
+@page "/UpdateActor/{id:int}"
 @inject IActorUpdateService ActorUpdateService
 @inject IAgentService AgentService
+@inject IActorService ActorService
 
-<PageTitle>Actor</PageTitle>
-
-<h3>Actor</h3>
+@if (id == null)
+{
+    <PageTitle>Create a new Super Actor</PageTitle>
+    <h3>Create a new Super Actor</h3>
+}
+else
+{
+    <PageTitle>Edit @actor.FullName</PageTitle>
+    <h3>Edit @actor.FullName</h3>
+}
 
 <EditForm Model="actor" OnSubmit="HandleSubmit">
     <div class="row">
@@ -27,7 +36,7 @@
           </div>
           <div class="col-md-4">
         <br />
-    <button type="submit" class="btn btn-primary form-check-inline">Submit</button>
+    <button type="submit" class="btn btn-primary form-check-inline">@btnText</button>
   </div>
     </div>
    
@@ -35,19 +44,38 @@
 </EditForm>
 
 @code {
-       Actor actor = new Actor();
-       protected override async Task OnInitializedAsync()
-        {
-         await AgentService.GetAgents();
-        }
-       protected override async Task OnParametersSetAsync()
-        {
+    [Parameter]
+    public int? id{ get; set; }
 
-         actor.Agents =  AgentService.agents[0];
-         actor.AgentId = actor.Agents.Id;
-        }
-       async Task HandleSubmit()
+    string btnText = string.Empty;
+    Actor actor = new Actor {  Agents = new Agent()};
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = id == null ? "Save New Actor" : "Update Actor";
+        await AgentService.GetAgents();
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (id == null)
         {
-            await ActorUpdateService.CreateActor(actor);
+            actor.Agents =  AgentService.agents[0];
+            actor.AgentId = actor.Agents.Id;
         }
+        else
+        {
+            actor = await ActorService.GetSingleActor((int)id);
+        }
+    }
+    async Task HandleSubmit()
+    {
+        if(id==null)
+        {
+            await ActorUpdateService.CreateActor(actor); 
+        }
+        else
+        {
+            await ActorUpdateService.UpdateActor(actor);
+        }
+    }
 }

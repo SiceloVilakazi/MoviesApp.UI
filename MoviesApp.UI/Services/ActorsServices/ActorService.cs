@@ -21,5 +21,13 @@ namespace MoviesApp.UI.Services
             if (apiResponse != null)
                 actors = apiResponse.ToList();
         }
+
+        public async Task<Actor> GetSingleActor(int id)
+        {
+            var actor = await moviesApiClient.ActorsAsync(id);
+            if (actor != null)
+                return actor;
+            return null;
+        }
     }
 }
