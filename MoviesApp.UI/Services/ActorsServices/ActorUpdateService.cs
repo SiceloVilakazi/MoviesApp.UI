@@ -23,6 +23,12 @@ namespace MoviesApp.UI.Services
 
         }
 
+        public async Task DeleteActor(int id)
+        {
+            await _movieApiClient.Actors2Async(id);
+            _navigationManager.NavigateTo("Actors");
+        }
+
         //private async Task SetActors(HttpResponseMessage result)
         //{
         //    _actorService.GetActors();

@@ -1,5 +1,6 @@
 ﻿@page "/Actors"
 @inject IActorService ActorService
+@inject IActorUpdateService UpdateService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Actors</PageTitle>
@@ -27,7 +28,7 @@
                 <td>@actor.Name</td>
                 <td>@actor.Surname</td>
                 <td>
-                   @* <button class="btn btn-primary" @onclick="(() => ShowHero(hero.Id))"><i class="oi oi-pencil"></i></button>*@
+                  <button class="btn btn-danger" @onclick="(() => RemoveActor(actor.Id))"><i class="oi oi-trash"></i></button>
                 </td>
             </tr>
         }
@@ -36,13 +37,17 @@
 
 @code {
     protected override async Task OnInitializedAsync()
-    {
-       // await AgentService.GetAgents();
-        await ActorService.GetActors();
-    }
+      {
+          await ActorService.GetActors();
+      }
     void CreateNewActor()
     {
         NavigationManager.NavigateTo("/UpdateActor");
+    }
+
+    async Task RemoveActor(int id)
+    {
+        await UpdateService.DeleteActor(id);
     }
    
 }
