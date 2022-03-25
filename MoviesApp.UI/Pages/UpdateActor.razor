@@ -1,0 +1,53 @@
+﻿@page "/UpdateActor"
+@inject IActorUpdateService ActorUpdateService
+@inject IAgentService AgentService
+
+<PageTitle>Actor</PageTitle>
+
+<h3>Actor</h3>
+
+<EditForm Model="actor" OnSubmit="HandleSubmit">
+    <div class="row">
+         <div class="col-md-4">
+        <label for="Name">Actor Name</label>
+        <InputText id="Name" @bind-Value="actor.Name" class="form-control"></InputText>
+        </div>
+         <div class="col-md-4">
+        <label for="Surname">Actor Surname</label>
+        <InputText id="Surname" @bind-Value="actor.Surname" class="form-control"></InputText>
+        </div>
+        <div class="col-md-4">
+        <label>Agent</label><br />
+        <InputSelect @bind-Value="actor.AgentId" class="form-select">
+            @foreach (var agent in AgentService.agents)
+            {
+                <option value="@agent.Id">@agent.CompanyName</option>
+            }
+        </InputSelect>
+          </div>
+          <div class="col-md-4">
+        <br />
+    <button type="submit" class="btn btn-primary form-check-inline">Submit</button>
+  </div>
+    </div>
+   
+  
+</EditForm>
+
+@code {
+       Actor actor = new Actor();
+       protected override async Task OnInitializedAsync()
+        {
+         await AgentService.GetAgents();
+        }
+       protected override async Task OnParametersSetAsync()
+        {
+
+         actor.Agents =  AgentService.agents[0];
+         actor.AgentId = actor.Agents.Id;
+        }
+       async Task HandleSubmit()
+        {
+            await ActorUpdateService.CreateActor(actor);
+        }
+}

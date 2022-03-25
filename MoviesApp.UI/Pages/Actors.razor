@@ -6,26 +6,10 @@
 
 <h3>Actors</h3>
 
-<EditForm Model="actor" OnSubmit="HandleSubmit">
-    <div class="row">
-         <div class="col-md-4">
-        <label for="Name">Actor Name</label>
-        <InputText id="Name" @bind-Value="actor.Name" class="form-control"></InputText>
-        </div>
-         <div class="col-md-4">
-        <label for="Surname">Actor Surname</label>
-        <InputText id="Surname" @bind-Value="actor.Surname" class="form-control"></InputText>
-        </div>
-        <div class="col-md-4">
-        <br />
-    <button type="submit" class="btn btn-primary form-check-inline">Submit</button>
-    </div>
-    </div>
-   
-  
-</EditForm>
-
-<br/>
+<br />
+<button class="btn btn-primary" @onclick="CreateNewActor">Create New Actor</button>
+<br />
+<br />
 
 
 <table class="table">
@@ -50,16 +34,15 @@
     </tbody>
 </table>
 
-
 @code {
-      Actor actor = new Actor();
     protected override async Task OnInitializedAsync()
     {
+       // await AgentService.GetAgents();
         await ActorService.GetActors();
     }
-
-    async Task HandleSubmit()
+    void CreateNewActor()
     {
-           // await ComicService.CreateComic(comic);
+        NavigationManager.NavigateTo("/UpdateActor");
     }
+   
 }
